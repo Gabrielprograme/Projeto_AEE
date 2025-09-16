@@ -187,4 +187,86 @@ export function ProfessorDashboard({ user, onLogout }: ProfessorDashboardProps) 
 
   const filteredStudents = students.filter((s) => s.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
-  
+    const stats = {
+    totalParents: parents.length,
+    totalStudents: students.length,
+    totalActivities: activities.length,
+    pendingActivities: activities.filter((a) => a.status === "planejada").length,
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b border-border bg-card">
+        <div className="flex h-16 items-center justify-between px-6">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <GraduationCap className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <div>
+              <h1 className="font-semibold text-lg">Sistema AEE</h1>
+              <p className="text-sm text-muted-foreground">Painel do Professor</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <div className="text-right">
+              <p className="text-sm font-medium">{user.name}</p>
+              <p className="text-xs text-muted-foreground">Professor</p>
+            </div>
+            <Button variant="ghost" size="icon" onClick={onLogout}>
+              <LogOut className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <div className="flex">
+        {/* Sidebar */}
+        <aside className="w-64 border-r border-border bg-card min-h-[calc(100vh-4rem)]">
+          <nav className="p-4 space-y-2">
+            <Button
+              variant={activeTab === "overview" ? "default" : "ghost"}
+              className="w-full justify-start"
+              onClick={() => setActiveTab("overview")}
+            >
+              <BookOpen className="w-4 h-4 mr-2" />
+              Visão Geral
+            </Button>
+            <Button
+              variant={activeTab === "students" ? "default" : "ghost"}
+              className="w-full justify-start"
+              onClick={() => setActiveTab("students")}
+            >
+              <Users className="w-4 h-4 mr-2" />
+              Alunos
+            </Button>
+            <Button
+              variant={activeTab === "parents" ? "default" : "ghost"}
+              className="w-full justify-start"
+              onClick={() => setActiveTab("parents")}
+            >
+              <UserPlus className="w-4 h-4 mr-2" />
+              Pais/Responsáveis
+            </Button>
+            <Button
+              variant={activeTab === "activities" ? "default" : "ghost"}
+              className="w-full justify-start"
+              onClick={() => setActiveTab("activities")}
+            >
+              <ClipboardList className="w-4 h-4 mr-2" />
+              Atividades
+            </Button>
+            <Button
+              variant={activeTab === "reports" ? "default" : "ghost"}
+              className="w-full justify-start"
+              onClick={() => setActiveTab("reports")}
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              Relatórios
+            </Button>
+          </nav>
+        </aside>
+
+        
