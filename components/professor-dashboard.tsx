@@ -269,4 +269,260 @@ export function ProfessorDashboard({ user, onLogout }: ProfessorDashboardProps) 
           </nav>
         </aside>
 
-        
+        {/* Main Content */}
+        <main className="flex-1 p-6">
+          {message && (
+            <Alert className="mb-6">
+              <AlertDescription>{message}</AlertDescription>
+            </Alert>
+          )}
+
+          {activeTab === "overview" && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">Visão Geral</h2>
+                <p className="text-muted-foreground">Resumo das suas atividades e alunos</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Pais Cadastrados</CardTitle>
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{stats.totalParents}</div>
+                    <p className="text-xs text-muted-foreground">Responsáveis ativos</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Alunos</CardTitle>
+                    <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{stats.totalStudents}</div>
+                    <p className="text-xs text-muted-foreground">Alunos cadastrados</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Atividades</CardTitle>
+                    <ClipboardList className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{stats.totalActivities}</div>
+                    <p className="text-xs text-muted-foreground">Total de atividades</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Pendentes</CardTitle>
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{stats.pendingActivities}</div>
+                    <p className="text-xs text-muted-foreground">Atividades planejadas</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Próximas Atividades</CardTitle>
+                    <CardDescription>Atividades programadas para os próximos dias</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {activities.slice(0, 3).map((activity) => (
+                        <div key={activity.id} className="flex items-center gap-3 p-3 bg-muted rounded-lg">
+                          <ClipboardList className="w-4 h-4 text-primary" />
+                          <div className="flex-1">
+                            <p className="text-sm font-medium">{activity.title}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {students.find((s) => s.id === activity.studentId)?.name}
+                            </p>
+                          </div>
+                          <Badge variant="outline">{activity.status}</Badge>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Alunos Recentes</CardTitle>
+                    <CardDescription>Últimos alunos cadastrados</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {students.slice(0, 3).map((student) => (
+                        <div key={student.id} className="flex items-center gap-3 p-3 bg-muted rounded-lg">
+                          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                            <span className="text-xs font-medium text-primary">
+                              {student.name.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium">{student.name}</p>
+                            <p className="text-xs text-muted-foreground">{student.grade}</p>
+                          </div>
+                          <Badge variant="secondary">{student.specialNeeds}</Badge>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "parents" && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold mb-2">Pais e Responsáveis</h2>
+                  <p className="text-muted-foreground">Gerencie os pais e responsáveis dos seus alunos</p>
+                </div>
+
+                <Dialog open={isCreateParentOpen} onOpenChange={setIsCreateParentOpen}>
+                  <DialogTrigger asChild>
+                    <Button>
+                      <UserPlus className="w-4 h-4 mr-2" />
+                      Novo Responsável
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Cadastrar Pai/Responsável</DialogTitle>
+                      <DialogDescription>Adicione um novo responsável ao sistema</DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleCreateParent} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="parent-name">Nome Completo</Label>
+                        <Input
+                          id="parent-name"
+                          value={newParent.name}
+                          onChange={(e) => setNewParent((prev) => ({ ...prev, name: e.target.value }))}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="parent-email">Email</Label>
+                        <Input
+                          id="parent-email"
+                          type="email"
+                          value={newParent.email}
+                          onChange={(e) => setNewParent((prev) => ({ ...prev, email: e.target.value }))}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="parent-password">Senha</Label>
+                        <div className="relative">
+                          <Input
+                            id="parent-password"
+                            type={showPassword ? "text" : "password"}
+                            value={newParent.password}
+                            onChange={(e) => setNewParent((prev) => ({ ...prev, password: e.target.value }))}
+                            required
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-0 top-0 h-full px-3"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button type="submit" className="flex-1">
+                          Cadastrar
+                        </Button>
+                        <Button type="button" variant="outline" onClick={() => setIsCreateParentOpen(false)}>
+                          Cancelar
+                        </Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Lista de Responsáveis</CardTitle>
+                  <CardDescription>Pais e responsáveis cadastrados por você</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {parents.map((parent) => (
+                      <div key={parent.id} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                            <span className="text-sm font-medium text-primary">
+                              {parent.name.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="font-medium">{parent.name}</p>
+                            <p className="text-sm text-muted-foreground">{parent.email}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="secondary">Pai/Responsável</Badge>
+                          <Button variant="ghost" size="icon">
+                            <MessageSquare className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    {parents.length === 0 && (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <Users className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                        <p>Nenhum responsável cadastrado ainda</p>
+                        <p className="text-sm">Clique em "Novo Responsável" para começar</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+            {activeTab === "students" && (
+            <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                <div>
+                    <h2 className="text-2xl font-bold mb-2">Alunos</h2>
+                    <p className="text-muted-foreground">Gerencie os alunos sob sua responsabilidade</p>
+                </div>
+
+                <Dialog open={isCreateStudentOpen} onOpenChange={setIsCreateStudentOpen}>
+                    <DialogTrigger asChild>
+                    <Button>
+                        <UserPlus className="w-4 h-4 mr-2" />
+                        Novo Aluno
+                    </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Cadastrar Novo Aluno</DialogTitle>
+                        <DialogDescription>Adicione um novo aluno ao sistema</DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleCreateStudent} className="space-y-4">
+                        <div className="space-y-2">
+                        <Label htmlFor="student-name">Nome do Aluno</Label>
+                        <Input
+                            id="student-name"
+                            value={newStudent.name}
+                            onChange={(e) => setNewStudent((prev) => ({ ...prev, name: e.target.value }))}
+                            required
+                        />
