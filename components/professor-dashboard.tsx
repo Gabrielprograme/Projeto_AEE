@@ -35,3 +35,28 @@ import { Textarea } from "@/components/ui/textarea"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AuthService, type User } from "@/lib/auth"
 
+interface ProfessorDashboardProps {
+  user: User
+  onLogout: () => void
+}
+
+interface Student {
+  id: string
+  name: string
+  parentEmail: string
+  parentName: string
+  grade: string
+  specialNeeds: string
+  createdAt: Date
+  isActive: boolean
+}
+
+interface Activity {
+  id: string
+  studentId: string
+  title: string
+  description: string
+  date: Date
+  status: "planejada" | "em-andamento" | "concluida"
+}
+
