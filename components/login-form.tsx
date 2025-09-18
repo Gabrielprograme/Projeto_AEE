@@ -54,8 +54,14 @@ export function LoginForm({ onLogin }: LoginFormProps) {
 
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-4 text-center">
-          <div className="mx-auto w-16 h-16 bg-primary rounded-full flex items-center justify-center">
-            <GraduationCap className="w-8 h-8 text-primary-foreground" />
+          <div className="mx-auto w-16 h-16 rounded-full overflow-hidden bg-white shadow-md">
+              <img
+              src="/images/Logo.png"
+              alt="Encantus Logo"
+              width={64}
+              height={64}
+              className="w-full h-full object-contain"
+            />
           </div>
           <div>
             <CardTitle className="text-2xl font-bold text-balance">Sistema AEE</CardTitle>

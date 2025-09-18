@@ -200,9 +200,15 @@ export function ProfessorDashboard({ user, onLogout }: ProfessorDashboardProps) 
       <header className="border-b border-border bg-card">
         <div className="flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <GraduationCap className="w-5 h-5 text-primary-foreground" />
-            </div>
+<div className="w-8 h-8 rounded-full overflow-hidden bg-white shadow-sm">
+  <img
+    src="/images/Logo.png"
+    alt="Encantus Logo"
+    width={32}
+    height={32}
+    className="w-full h-full object-contain"
+  />
+</div>
             <div>
               <h1 className="font-semibold text-lg">Sistema AEE</h1>
               <p className="text-sm text-muted-foreground">Painel do Professor</p>
