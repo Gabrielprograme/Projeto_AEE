@@ -710,3 +710,64 @@ export function ProfessorDashboard({ user, onLogout }: ProfessorDashboardProps) 
                   </DialogContent>
                 </Dialog>
               </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Lista de Atividades</CardTitle>
+                  <CardDescription>Atividades planejadas e em andamento</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {activities.map((activity) => (
+                      <div key={activity.id} className="p-4 border rounded-lg">
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <h3 className="font-medium">{activity.title}</h3>
+                            <p className="text-sm text-muted-foreground">
+                              Aluno: {students.find((s) => s.id === activity.studentId)?.name}
+                            </p>
+                          </div>
+                          <Badge
+                            variant={
+                              activity.status === "concluida"
+                                ? "default"
+                                : activity.status === "em-andamento"
+                                  ? "secondary"
+                                  : "outline"
+                            }
+                          >
+                            {activity.status}
+                          </Badge>
+                          </div>
+                        <p className="text-sm mb-3">{activity.description}</p>
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs text-muted-foreground">
+                            Data: {activity.date.toLocaleDateString("pt-BR")}
+                          </p>
+                          <div className="flex gap-1">
+                            <Button variant="ghost" size="sm">
+                              <Edit className="w-3 h-3 mr-1" />
+                              Editar
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <MessageSquare className="w-3 h-3 mr-1" />
+                              Comentar
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                                        {activities.length === 0 && (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <ClipboardList className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                        <p>Nenhuma atividade criada ainda</p>
+                        <p className="text-sm">Clique em "Nova Atividade" para começar</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+        
