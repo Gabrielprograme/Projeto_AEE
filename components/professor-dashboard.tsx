@@ -630,3 +630,83 @@ export function ProfessorDashboard({ user, onLogout }: ProfessorDashboardProps) 
               </Card>
             </div>
           )}
+          
+          {activeTab === "activities" && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold mb-2">Atividades</h2>
+                  <p className="text-muted-foreground">Planeje e acompanhe atividades para seus alunos</p>
+                </div>
+
+                <Dialog open={isCreateActivityOpen} onOpenChange={setIsCreateActivityOpen}>
+                  <DialogTrigger asChild>
+                    <Button>
+                      <ClipboardList className="w-4 h-4 mr-2" />
+                      Nova Atividade
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Criar Atividade</DialogTitle>
+                      <DialogDescription>Planeje uma nova atividade para um aluno</DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleCreateActivity} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="activity-student">Aluno</Label>
+                        <select
+                          id="activity-student"
+                          className="w-full p-2 border rounded-md"
+                          value={newActivity.studentId}
+                          onChange={(e) => setNewActivity((prev) => ({ ...prev, studentId: e.target.value }))}
+                          required
+                        >
+                          <option value="">Selecione um aluno</option>
+                          {students.map((student) => (
+                            <option key={student.id} value={student.id}>
+                              {student.name} ({student.grade})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="activity-title">Título da Atividade</Label>
+                        <Input
+                          id="activity-title"
+                          value={newActivity.title}
+                          onChange={(e) => setNewActivity((prev) => ({ ...prev, title: e.target.value }))}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="activity-description">Descrição</Label>
+                        <Textarea
+                          id="activity-description"
+                          value={newActivity.description}
+                          onChange={(e) => setNewActivity((prev) => ({ ...prev, description: e.target.value }))}
+                          placeholder="Descreva a atividade e seus objetivos"
+                          required
+                        />
+                      </div>
+                       <div className="space-y-2">
+                        <Label htmlFor="activity-date">Data Planejada</Label>
+                        <Input
+                          id="activity-date"
+                          type="date"
+                          value={newActivity.date}
+                          onChange={(e) => setNewActivity((prev) => ({ ...prev, date: e.target.value }))}
+                          required
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <Button type="submit" className="flex-1">
+                          Criar Atividade
+                        </Button>
+                        <Button type="button" variant="outline" onClick={() => setIsCreateActivityOpen(false)}>
+                          Cancelar
+                        </Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              </div>
