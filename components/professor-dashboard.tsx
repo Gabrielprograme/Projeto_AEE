@@ -770,4 +770,38 @@ export function ProfessorDashboard({ user, onLogout }: ProfessorDashboardProps) 
             </div>
           )}
 
-        
+                 {activeTab === "reports" && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">Relatórios</h2>
+                <p className="text-muted-foreground">Relatórios de progresso e atividades</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Relatório de Alunos</CardTitle>
+                    <CardDescription>Progresso e desenvolvimento dos alunos</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button className="w-full">Gerar Relatório</Button>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Relatório de Atividades</CardTitle>
+                    <CardDescription>Atividades realizadas e planejadas</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button className="w-full">Gerar Relatório</Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  )
+}
