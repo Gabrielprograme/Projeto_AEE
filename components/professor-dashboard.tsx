@@ -93,7 +93,7 @@ export function ProfessorDashboard({ user, onLogout }: ProfessorDashboardProps) 
     loadData()
   }, [])
 
-    const loadData = async () => {
+  const loadData = async () => {
     const allUsers = await AuthService.getAllUsers()
     const parentsCreatedByMe = allUsers.filter((u) => u.role === "pai" && u.createdBy === user.id)
     setParents(parentsCreatedByMe)
@@ -187,7 +187,7 @@ export function ProfessorDashboard({ user, onLogout }: ProfessorDashboardProps) 
 
   const filteredStudents = students.filter((s) => s.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
-    const stats = {
+  const stats = {
     totalParents: parents.length,
     totalStudents: students.length,
     totalActivities: activities.length,
@@ -497,32 +497,136 @@ export function ProfessorDashboard({ user, onLogout }: ProfessorDashboardProps) 
             </div>
           )}
 
-            {activeTab === "students" && (
+          {activeTab === "students" && (
             <div className="space-y-6">
-                <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold mb-2">Alunos</h2>
-                    <p className="text-muted-foreground">Gerencie os alunos sob sua responsabilidade</p>
+                  <h2 className="text-2xl font-bold mb-2">Alunos</h2>
+                  <p className="text-muted-foreground">Gerencie os alunos sob sua responsabilidade</p>
                 </div>
 
                 <Dialog open={isCreateStudentOpen} onOpenChange={setIsCreateStudentOpen}>
-                    <DialogTrigger asChild>
+                  <DialogTrigger asChild>
                     <Button>
-                        <UserPlus className="w-4 h-4 mr-2" />
-                        Novo Aluno
+                      <UserPlus className="w-4 h-4 mr-2" />
+                      Novo Aluno
                     </Button>
-                    </DialogTrigger>
-                    <DialogContent>
+                  </DialogTrigger>
+                  <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Cadastrar Novo Aluno</DialogTitle>
-                        <DialogDescription>Adicione um novo aluno ao sistema</DialogDescription>
+                      <DialogTitle>Cadastrar Novo Aluno</DialogTitle>
+                      <DialogDescription>Adicione um novo aluno ao sistema</DialogDescription>
                     </DialogHeader>
                     <form onSubmit={handleCreateStudent} className="space-y-4">
-                        <div className="space-y-2">
+                      <div className="space-y-2">
                         <Label htmlFor="student-name">Nome do Aluno</Label>
                         <Input
-                            id="student-name"
-                            value={newStudent.name}
-                            onChange={(e) => setNewStudent((prev) => ({ ...prev, name: e.target.value }))}
-                            required
+                          id="student-name"
+                          value={newStudent.name}
+                          onChange={(e) => setNewStudent((prev) => ({ ...prev, name: e.target.value }))}
+                          required
                         />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="parent-select">Responsável</Label>
+                        <select
+                          id="parent-select"
+                          className="w-full p-2 border rounded-md"
+                          value={newStudent.parentEmail}
+                          onChange={(e) => setNewStudent((prev) => ({ ...prev, parentEmail: e.target.value }))}
+                          required
+                        >
+                          <option value="">Selecione um responsável</option>
+                          {parents.map((parent) => (
+                            <option key={parent.id} value={parent.email}>
+                              {parent.name} ({parent.email})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="student-grade">Série/Ano</Label>
+                        <Input
+                          id="student-grade"
+                          value={newStudent.grade}
+                          onChange={(e) => setNewStudent((prev) => ({ ...prev, grade: e.target.value }))}
+                          placeholder="Ex: 3º Ano, 5ª Série"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="special-needs">Necessidades Especiais</Label>
+                        <Textarea
+                          id="special-needs"
+                          value={newStudent.specialNeeds}
+                          onChange={(e) => setNewStudent((prev) => ({ ...prev, specialNeeds: e.target.value }))}
+                          placeholder="Descreva as necessidades especiais do aluno"
+                          required
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <Button type="submit" className="flex-1">
+                          Cadastrar Aluno
+                        </Button>
+                        <Button type="button" variant="outline" onClick={() => setIsCreateStudentOpen(false)}>
+                          Cancelar
+                        </Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              </div>
+                          <div className="flex items-center gap-4">
+                <div className="relative flex-1 max-w-sm">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                  <Input
+                    placeholder="Buscar alunos..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+
+                 <Card>
+                <CardHeader>
+                  <CardTitle>Lista de Alunos</CardTitle>
+                  <CardDescription>Alunos cadastrados no sistema</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {filteredStudents.map((student) => (
+                      <div key={student.id} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                            <span className="text-sm font-medium text-primary">
+                              {student.name.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="font-medium">{student.name}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {student.grade} • Responsável: {student.parentName}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="secondary">{student.specialNeeds}</Badge>
+                          <Button variant="ghost" size="icon">
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    {filteredStudents.length === 0 && (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <GraduationCap className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                        <p>Nenhum aluno encontrado</p>
+                        <p className="text-sm">Cadastre responsáveis primeiro, depois adicione alunos</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
