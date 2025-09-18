@@ -5,15 +5,15 @@
 
 :root {
   /* Atualizando cores para o tema educacional AEE */
-  --background: #ffffff;
+  --background: #eee3ff;
   --foreground: #475569;
   --card: #f8fafc;
   --card-foreground: #475569;
   --popover: #ffffff;
   --popover-foreground: #475569;
-  --primary: #059669;
+  --primary: #ba82f0;
   --primary-foreground: #ffffff;
-  --secondary: #10b981;
+  --secondary: #9e6ce8;
   --secondary-foreground: #ffffff;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
@@ -42,15 +42,15 @@
 
 .dark {
   /* Configurando modo escuro para o sistema AEE */
-  --background: #0f172a;
+  --background: #2b1852;
   --foreground: #f1f5f9;
   --card: #1e293b;
   --card-foreground: #f1f5f9;
   --popover: #1e293b;
   --popover-foreground: #f1f5f9;
-  --primary: #10b981;
+  --primary: #9e6ce8;
   --primary-foreground: #0f172a;
-  --secondary: #059669;
+  --secondary: #ba82f0;
   --secondary-foreground: #f1f5f9;
   --muted: #334155;
   --muted-foreground: #94a3b8;
