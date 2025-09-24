@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { LoginForm } from "@/components/login-form"
 import { ProfessorDashboard } from "@/components/professor-dashboard"
 import { AuthService, type User } from "@/lib/auth"
+import AdminPage from "@/components/admin"
 
 export default function HomePage() {
   const [user, setUser] = useState<User | null>(null)
@@ -41,7 +42,7 @@ export default function HomePage() {
 
   switch (user.role) {
     case "admin":
-    return
+    return <AdminPage onExit={() => setUser(null)} />
     case "professor":
       return <ProfessorDashboard user={user} onLogout={handleLogout} />
     default:
