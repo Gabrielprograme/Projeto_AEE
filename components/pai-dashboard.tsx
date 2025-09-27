@@ -33,3 +33,36 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { ThemeToggle } from "@/components/theme-toggle"
 import type { User as UserType } from "@/lib/auth"
 
+
+interface PaiDashboardProps {
+  user: UserType
+  onLogout: () => void
+}
+
+interface Student {
+  id: string
+  name: string
+  grade: string
+  specialNeeds: string
+  teacher: string
+  teacherEmail: string
+}
+
+interface Activity {
+  id: string
+  title: string
+  description: string
+  date: Date
+  status: "planejada" | "em-andamento" | "concluida"
+  feedback?: string
+  rating?: number
+}
+
+interface Message {
+  id: string
+  from: string
+  fromRole: "professor" | "pai"
+  content: string
+  date: Date
+  isRead: boolean
+}
