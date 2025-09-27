@@ -123,5 +123,25 @@ export function PaiDashboard({ user, onLogout }: PaiDashboardProps) {
         status: "planejada",
       },
     ]
+
+    const mockMessages: Message[] = [
+      {
+        id: "1",
+        from: "Maria Silva",
+        fromRole: "professor",
+        content:
+          "Olá! Gostaria de conversar sobre o progresso da Ana na leitura. Ela tem mostrado uma evolução muito positiva!",
+        date: new Date("2024-03-18"),
+        isRead: false,
+      },
+      {
+        id: "2",
+        from: "João Santos",
+        fromRole: "pai",
+        content: "Obrigado pelo feedback! Em casa também notamos que ela está mais confiante para ler.",
+        date: new Date("2024-03-19"),
+        isRead: true,
+      },
+    ]  
 }
 }
