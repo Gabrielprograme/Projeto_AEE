@@ -66,3 +66,62 @@ interface Message {
   date: Date
   isRead: boolean
 }
+
+
+export function PaiDashboard({ user, onLogout }: PaiDashboardProps) {
+  const [activeTab, setActiveTab] = useState("overview")
+  const [students, setStudents] = useState<Student[]>([])
+  const [activities, setActivities] = useState<Activity[]>([])
+  const [messages, setMessages] = useState<Message[]>([])
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
+  const [isMessageOpen, setIsMessageOpen] = useState(false)
+  const [feedback, setFeedback] = useState("")
+  const [rating, setRating] = useState(0)
+  const [newMessage, setNewMessage] = useState("")
+  const [alertMessage, setAlertMessage] = useState("")
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
+  const loadData = () => {
+    
+    const mockStudents: Student[] = [
+      {
+        id: "1",
+        name: "Ana Silva Santos",
+        grade: "3º Ano",
+        specialNeeds: "Dislexia",
+        teacher: "Maria Silva",
+        teacherEmail: "prof1@aee.edu.br",
+      },
+    ]
+
+    const mockActivities: Activity[] = [
+      {
+        id: "1",
+        title: "Atividade de Leitura Adaptada",
+        description: "Exercícios de leitura com fonte ampliada e espaçamento adequado para dislexia",
+        date: new Date("2024-03-15"),
+        status: "concluida",
+        feedback: "Ana demonstrou grande melhora na velocidade de leitura!",
+        rating: 4,
+      },
+      {
+        id: "2",
+        title: "Exercícios de Coordenação Motora",
+        description: "Atividades para desenvolver coordenação motora fina através de desenhos e escrita",
+        date: new Date("2024-03-20"),
+        status: "em-andamento",
+      },
+      {
+        id: "3",
+        title: "Jogos Educativos Adaptados",
+        description: "Jogos de matemática com elementos visuais para facilitar o aprendizado",
+        date: new Date("2024-03-25"),
+        status: "planejada",
+      },
+    ]
+}
+}
