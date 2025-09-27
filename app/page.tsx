@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { LoginForm } from "@/components/login-form"
 import { ProfessorDashboard } from "@/components/professor-dashboard"
 import { AuthService, type User } from "@/lib/auth"
-import AdminPage from "@/components/admin"
+import AdminPage from "@/components/admin-dashboard"
 
 export default function HomePage() {
   const [user, setUser] = useState<User | null>(null)
