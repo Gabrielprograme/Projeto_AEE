@@ -143,5 +143,8 @@ export function PaiDashboard({ user, onLogout }: PaiDashboardProps) {
         isRead: true,
       },
     ]  
+     setStudents(mockStudents)
+    setActivities(mockActivities)
+    setMessages(mockMessages)
 }
 }
