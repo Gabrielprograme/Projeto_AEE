@@ -86,7 +86,7 @@ export function PaiDashboard({ user, onLogout }: PaiDashboardProps) {
   }, [])
 
   const loadData = () => {
-    
+
     const mockStudents: Student[] = [
       {
         id: "1",
@@ -142,9 +142,52 @@ export function PaiDashboard({ user, onLogout }: PaiDashboardProps) {
         date: new Date("2024-03-19"),
         isRead: true,
       },
-    ]  
-     setStudents(mockStudents)
+    ]
+    setStudents(mockStudents)
     setActivities(mockActivities)
     setMessages(mockMessages)
-}
+  }
+  const handleFeedback = (activity: Activity) => {
+    setSelectedActivity(activity)
+    setFeedback(activity.feedback || "")
+    setRating(activity.rating || 0)
+    setIsFeedbackOpen(true)
+  }
+
+  const submitFeedback = () => {
+    if (selectedActivity) {
+      const updatedActivities = activities.map((act) =>
+        act.id === selectedActivity.id ? { ...act, feedback, rating } : act,
+      )
+      setActivities(updatedActivities)
+      setAlertMessage("Feedback enviado com sucesso!")
+      setIsFeedbackOpen(false)
+    }
+  }
+  const sendMessage = () => {
+    if (newMessage.trim()) {
+      const message: Message = {
+        id: Date.now().toString(),
+        from: user.name,
+        fromRole: "pai",
+        content: newMessage,
+        date: new Date(),
+        isRead: true,
+      }
+      setMessages((prev) => [...prev, message])
+      setNewMessage("")
+      setAlertMessage("Mensagem enviada com sucesso!")
+      setIsMessageOpen(false)
+    }
+  }
+
+  const markAsRead = (messageId: string) => {
+    setMessages((prev) => prev.map((msg) => (msg.id === messageId ? { ...msg, isRead: true } : msg)))
+  }
+  const stats = {
+    totalActivities: activities.length,
+    completedActivities: activities.filter((a) => a.status === "concluida").length,
+    inProgressActivities: activities.filter((a) => a.status === "em-andamento").length,
+    unreadMessages: messages.filter((m) => !m.isRead && m.fromRole === "professor").length,
+  }
 }
